@@ -10,7 +10,9 @@ import {
   Smile, 
   X, 
   ArrowRight,
-  Info
+  Info,
+  Menu,
+  Plus
 } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -24,6 +26,7 @@ function App() {
   const [activeTheme, setActiveTheme] = useState('lime'); // 'lime' or 'cyan'
   const [showNotification, setShowNotification] = useState(false);
   const [formStatus, setFormStatus] = useState('idle'); // 'idle' | 'sending' | 'success'
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   // Before/After Slider DOM Refs
   const containerRef = useRef(null);
@@ -57,26 +60,38 @@ function App() {
       typographyRef.current.style.width = `${containerWidth}px`;
     }
     
+    const isMobile = window.innerWidth < 768;
+
     // Dynamic sliding labels positioning and fading
     if (afterLabelRef.current) {
-      const afterLabelWidth = afterLabelRef.current.offsetWidth || 180;
-      // Position After label (left side) so its right side is 24px left of the handle
-      const labelX = x - 24 - afterLabelWidth;
-      afterLabelRef.current.style.transform = `translate3d(${labelX}px, -50%, 0)`;
-      
-      // Fade out as it reaches the left border (from 120px to 60px)
-      const opacity = Math.max(0, Math.min(1, (x - 60) / 100));
-      afterLabelRef.current.style.opacity = opacity;
+      if (isMobile) {
+        afterLabelRef.current.style.transform = '';
+        afterLabelRef.current.style.opacity = '1';
+      } else {
+        const afterLabelWidth = afterLabelRef.current.offsetWidth || 180;
+        // Position After label (left side) so its right side is 24px left of the handle
+        const labelX = x - 24 - afterLabelWidth;
+        afterLabelRef.current.style.transform = `translate3d(${labelX}px, -50%, 0)`;
+        
+        // Fade out as it reaches the left border (from 120px to 60px)
+        const opacity = Math.max(0, Math.min(1, (x - 60) / 100));
+        afterLabelRef.current.style.opacity = opacity;
+      }
     }
     
     if (beforeLabelRef.current) {
-      // Position Before label (right side) so its left side is 24px right of the handle
-      const labelX = x + 24;
-      beforeLabelRef.current.style.transform = `translate3d(${labelX}px, -50%, 0)`;
-      
-      // Fade out as it reaches the right border (from 120px to 60px)
-      const opacity = Math.max(0, Math.min(1, (containerWidth - x - 60) / 100));
-      beforeLabelRef.current.style.opacity = opacity;
+      if (isMobile) {
+        beforeLabelRef.current.style.transform = '';
+        beforeLabelRef.current.style.opacity = '1';
+      } else {
+        // Position Before label (right side) so its left side is 24px right of the handle
+        const labelX = x + 24;
+        beforeLabelRef.current.style.transform = `translate3d(${labelX}px, -50%, 0)`;
+        
+        // Fade out as it reaches the right border (from 120px to 60px)
+        const opacity = Math.max(0, Math.min(1, (containerWidth - x - 60) / 100));
+        beforeLabelRef.current.style.opacity = opacity;
+      }
     }
   };
 
@@ -216,10 +231,23 @@ function App() {
 
   const handleTouchMove = (e) => {
     if (!isDragging.current) return;
+    e.preventDefault();
     if (e.touches && e.touches[0]) {
       handleSliderMove(e.touches[0].clientX);
     }
   };
+
+  // Attach touch listeners with { passive: false } to allow preventDefault on mobile
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    el.addEventListener('touchstart', handleStartDrag, { passive: false });
+    el.addEventListener('touchmove', handleTouchMove, { passive: false });
+    return () => {
+      el.removeEventListener('touchstart', handleStartDrag);
+      el.removeEventListener('touchmove', handleTouchMove);
+    };
+  }, []);
 
   // GSAP Animations on Mount
   useEffect(() => {
@@ -280,6 +308,24 @@ function App() {
       <div className="custom-cursor" ref={cursorRef} />
       <div className="custom-cursor-dot" ref={cursorDotRef} />
 
+      {/* Mobile Menu Overlay */}
+      {mobileMenuOpen && (
+        <div className="mobile-menu-overlay">
+          <button 
+            className="mobile-menu-close" 
+            onClick={() => setMobileMenuOpen(false)}
+            aria-label="Close navigation menu"
+          >
+            <X size={28} />
+          </button>
+          <nav className="mobile-menu-links">
+            <a href="#services" className="mobile-menu-link" onClick={() => setMobileMenuOpen(false)}>Services</a>
+            <a href="#philosophy" className="mobile-menu-link" onClick={() => setMobileMenuOpen(false)}>Philosophy</a>
+            <a href="#contact" className="mobile-menu-link" onClick={() => setMobileMenuOpen(false)}>Launch</a>
+          </nav>
+        </div>
+      )}
+
       {/* Header */}
       <header className="header">
         <a href="#hero" className="logo">
@@ -290,6 +336,13 @@ function App() {
           <a href="#philosophy" className="nav-link">Philosophy</a>
           <a href="#contact" className="nav-link">Launch</a>
         </nav>
+        <button 
+          className="mobile-menu-btn" 
+          onClick={() => setMobileMenuOpen(true)}
+          aria-label="Open navigation menu"
+        >
+          <Menu size={24} />
+        </button>
       </header>
 
       {/* Hero Section */}
@@ -416,9 +469,7 @@ function App() {
             className="before-after-container" 
             ref={containerRef}
             onMouseMove={handleMouseMove}
-            onTouchMove={handleTouchMove}
             onMouseDown={handleStartDrag}
-            onTouchStart={handleStartDrag}
           >
             {/* Before (Background) */}
             <div className="ba-slider-pane pane-before">
@@ -478,7 +529,10 @@ function App() {
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <div className="service-row">
               <span className="service-num">01/</span>
-              <h3 className="service-title">Brutal Art Direction</h3>
+              <div className="service-text-group">
+                <h3 className="service-title">Brutal Art Direction</h3>
+                <p className="service-desc">Challenging aesthetics that command high-ticket market authority.</p>
+              </div>
               <div className="service-tags">
                 <span className="service-tag">Typography</span>
                 <span className="service-tag">UX Strategy</span>
@@ -487,7 +541,10 @@ function App() {
 
             <div className="service-row">
               <span className="service-num">02/</span>
-              <h3 className="service-title">Kinetic Motion & WebGL</h3>
+              <div className="service-text-group">
+                <h3 className="service-title">Kinetic Motion & WebGL</h3>
+                <p className="service-desc">High-performance animations that retain user engagement and delight.</p>
+              </div>
               <div className="service-tags">
                 <span className="service-tag">GSAP Engine</span>
                 <span className="service-tag">Fluid dynamics</span>
@@ -496,7 +553,10 @@ function App() {
 
             <div className="service-row">
               <span className="service-num">03/</span>
-              <h3 className="service-title">High-Conversion SEO</h3>
+              <div className="service-text-group">
+                <h3 className="service-title">High-Conversion SEO</h3>
+                <p className="service-desc">Invisible architecture that places your brand in front of the right elite audience.</p>
+              </div>
               <div className="service-tags">
                 <span className="service-tag">Semantic HTML</span>
                 <span className="service-tag">Page speed</span>
@@ -527,13 +587,6 @@ function App() {
               <p className="philosophy-text-giant">
                 “Design is not a decorative layer. It is the core financial instrument of your brand. When your interface looks expensive, your product feels expensive. Good layout is intimidation.”
               </p>
-              <div style={{ marginTop: '2.5rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                <div style={{ width: '40px', height: '40px', borderRadius: '50%', backgroundColor: 'var(--color-lime)' }} />
-                <div>
-                  <span style={{ display: 'block', fontWeight: 'bold', fontSize: '0.9rem' }}>ALEXIS KRAUSS</span>
-                  <span style={{ display: 'block', fontSize: '0.75rem', color: '#666', fontFamily: 'var(--font-mono)' }}>Founder // Lead Architect</span>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -722,6 +775,22 @@ function App() {
           <div className="toast-progress-bar" />
         </div>
       )}
+
+      {/* Bottom Navigation Bar for Mobile */}
+      <nav className="bottom-nav">
+        <a href="#hero" className="bottom-nav-item">
+          <Layers size={20} />
+          <span className="bottom-nav-label">Portfolio</span>
+        </a>
+        <a href="#philosophy" className="bottom-nav-item">
+          <Info size={20} />
+          <span className="bottom-nav-label">Agency</span>
+        </a>
+        <a href="#contact" className="bottom-nav-item highlight">
+          <Plus size={20} />
+          <span className="bottom-nav-label">Start</span>
+        </a>
+      </nav>
     </>
   );
 }

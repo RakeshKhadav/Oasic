@@ -454,6 +454,11 @@
   align-items: center;
   transition: background-color 0.4s, padding-left 0.4s;
   position: relative;
+  width: 100%;
+}
+
+.service-row:first-child {
+  border-top: 1px solid var(--border-subtle);
 }
 
 .service-row:hover {
@@ -465,6 +470,8 @@
   font-family: var(--font-mono);
   color: #8c8c8c;
   font-size: 1rem;
+  align-self: start;
+  padding-top: 0.5rem;
 }
 
 .service-row:hover .service-num {
@@ -487,6 +494,7 @@
 .service-tags {
   display: flex;
   gap: 1rem;
+  align-self: center;
 }
 
 .service-tag {
@@ -514,6 +522,24 @@
   .philosophy-grid {
     grid-template-columns: 1fr;
     gap: 2.5rem;
+    text-align: center;
+  }
+  .philosophy-left {
+    align-items: center;
+  }
+  .philosophy-left .display-medium {
+    text-align: center !important;
+  }
+  .philosophy-left .hero-desc {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .philosophy-quote-card {
+    text-align: center;
+  }
+  .philosophy-quote-card > div {
+    justify-content: center;
   }
 }
 
@@ -702,6 +728,24 @@
   .contact-split-layout {
     grid-template-columns: 1fr;
     gap: 3rem;
+    text-align: center;
+  }
+  .contact-manifesto {
+    align-items: center;
+  }
+  .contact-manifesto .display-medium {
+    text-align: center !important;
+  }
+  .contact-manifesto .hero-desc {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .contact-manifesto .mono-label {
+    justify-content: center;
+  }
+  .contact-form .btn-brutalist {
+    align-self: center !important;
   }
 }
 
@@ -802,6 +846,91 @@
   margin: 3rem 0;
 }
 
+/* Mobile menu & bottom nav base styles */
+.mobile-menu-btn {
+  display: none;
+  background: transparent;
+  border: none;
+  color: var(--color-silver);
+  cursor: pointer;
+  padding: 0.5rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-menu-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(9, 9, 9, 0.98);
+  z-index: 10005;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 80px 80px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.mobile-menu-close {
+  position: absolute;
+  top: 2.5rem;
+  right: 2.5rem;
+  background: transparent;
+  border: none;
+  color: var(--color-silver);
+  cursor: pointer;
+}
+
+.mobile-menu-links {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+.mobile-menu-link {
+  font-family: var(--font-display);
+  font-size: 3.5rem;
+  text-transform: uppercase;
+  color: var(--color-ivory);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.mobile-menu-link:hover {
+  color: var(--color-lime);
+}
+
+.bottom-nav {
+  display: none;
+}
+
+.service-text-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.service-desc {
+  font-size: 0.95rem;
+  color: #888;
+  max-width: 480px;
+  margin: 0.5rem 0 0 0;
+  line-height: 1.5;
+  transition: color 0.4s;
+}
+
+.service-row:hover .service-desc {
+  color: var(--color-silver);
+}
+
 /* Responsiveness Media Queries */
 @media (max-width: 1024px) {
   .hero-mockup {
@@ -815,17 +944,62 @@
 @media (max-width: 768px) {
   /* Header */
   .header {
-    padding: 0.75rem 1.5rem;
+    width: calc(100% - 2rem);
+    max-width: 100%;
+    padding: 1rem 1.5rem;
     top: 1rem;
   }
   .logo {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
   }
   .nav-links {
-    gap: 1.5rem;
+    display: none !important;
   }
-  .nav-link {
-    font-size: 0.75rem;
+  .mobile-menu-btn {
+    display: flex;
+  }
+
+  /* Bottom Navigation */
+  .bottom-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 72px;
+    background-color: rgba(9, 9, 9, 0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-top: 1px solid var(--glass-stroke);
+    justify-content: space-around;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    z-index: 1000;
+  }
+  .bottom-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+    text-decoration: none;
+    gap: 0.25rem;
+    transition: color 0.3s;
+  }
+  .bottom-nav-item:hover, .bottom-nav-item:active {
+    color: var(--color-lime);
+  }
+  .bottom-nav-item.highlight {
+    color: var(--color-ivory);
+  }
+  .bottom-nav-item.highlight:hover {
+    color: var(--color-lime);
+  }
+  .bottom-nav-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.10em;
   }
 
   /* Manifesto */
@@ -833,49 +1007,142 @@
     grid-template-columns: 1fr;
     gap: 1.5rem;
     margin: 2rem 0;
+    text-align: center;
+  }
+  .manifesto-grid .display-medium {
+    text-align: center !important;
+  }
+  .manifesto-grid .hero-desc {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  /* Hide the "Outdated Templates" card on mobile, only show Oasic Standards */
+  .compare-card.card-bad {
+    display: none;
+  }
+  .ba-compare-grid {
+    grid-template-columns: 1fr;
   }
 
-  /* Hero */
+  /* Hero — center everything on mobile */
   .hero-wrapper {
-    padding-top: 100px;
+    padding-top: 120px;
+    padding-bottom: 4rem;
+    min-height: auto;
+  }
+  .hero-content {
+    text-align: center;
+  }
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .hero-left h1 {
+    text-align: center;
+  }
+  .hero-subtitle {
+    justify-content: center;
+  }
+  .hero-desc {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .hero-cta-group {
+    justify-content: center;
+  }
+  .hero-right {
+    justify-content: center;
   }
   .hero-mockup {
+    width: 100%;
     height: auto;
-    aspect-ratio: 16/10;
-    max-height: 360px;
+    aspect-ratio: 4/3;
+    max-height: none;
   }
 
-  /* Slider */
+  /* Ticker strip — reduce height on mobile */
+  .ticker-wrap {
+    padding: 0.75rem 0;
+  }
+  .ticker-item {
+    font-size: 1.4rem;
+    margin-right: 2rem;
+    gap: 1rem;
+  }
+
+  /* Slider — fit mobile screens */
   .before-after-container {
-    height: 420px;
+    height: 380px !important;
+    border: none;
   }
   .slider-typography-overlay {
-    top: 12%;
+    top: auto;
+    bottom: 2.5rem;
   }
   .slider-overlay-title {
-    letter-spacing: 0.15em;
-    font-size: clamp(1.4rem, 4vw, 2.2rem);
+    letter-spacing: 0.12em;
+    font-size: clamp(1.2rem, 4.5vw, 2rem);
   }
   .slider-overlay-subtext {
-    font-size: 0.75rem;
-    max-width: 320px;
+    font-size: 0.7rem;
+    max-width: 280px;
     padding: 0 1rem;
   }
-  .ba-label-pill {
-    font-size: 0.6rem;
-    padding: 0.4rem 0.8rem;
+  
+  /* Hide Before/After labels on mobile */
+  .before-label-wrapper, .after-label-wrapper {
+    display: none !important;
   }
 
-  /* Services */
+  /* Services row layout */
   .service-row {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 0.5rem;
     align-items: flex-start;
     padding: 2rem 0;
   }
+  .service-num {
+    padding-top: 0;
+    font-size: 0.85rem;
+  }
+  .service-title {
+    font-size: clamp(1.4rem, 5vw, 2.2rem);
+  }
   .service-tags {
-    margin-top: 0.5rem;
+    grid-column: 1 / -1;
     flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: flex-start;
+    padding-left: 0;
+  }
+  .service-desc {
+    font-size: 0.9rem;
+    max-width: 100%;
+  }
+
+  /* Transparent bottom-border forms on mobile */
+  .contact-form input, .contact-form textarea {
+    background-color: transparent !important;
+    border: none !important;
+    border-bottom: 1px solid var(--glass-stroke) !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    border-radius: 0 !important;
+    transition: border-color 0.3s;
+  }
+  .contact-form input:focus, .contact-form textarea:focus {
+    border-bottom-color: var(--color-lime) !important;
+  }
+
+  /* Quote Card & Form padding */
+  .philosophy-quote-card {
+    padding: 2rem;
+  }
+  .contact-form {
+    padding: 2.5rem 2rem;
   }
 
   /* Footer */
@@ -883,37 +1150,39 @@
     flex-direction: column;
     gap: 1.5rem;
     text-align: center;
-    padding: 2.5rem 0;
+    padding: 2.5rem 0 7.5rem 0; /* Add bottom padding so bottom nav doesn't cover text */
   }
 
   /* Typography scale down for mobile viewports to prevent overflow */
   .hero-left h1 {
-    font-size: clamp(2rem, 7vw, 4rem) !important;
+    font-size: clamp(2.2rem, 7vw, 4.5rem) !important;
   }
   .display-large {
-    font-size: clamp(2.5rem, 8vw, 5rem) !important;
+    font-size: clamp(2.8rem, 8vw, 5.5rem) !important;
   }
   .display-medium {
-    font-size: clamp(1.8rem, 6vw, 3.2rem) !important;
+    font-size: clamp(2rem, 6vw, 3.5rem) !important;
   }
   .cta-large-text {
-    font-size: clamp(2.2rem, 8vw, 4.8rem) !important;
+    font-size: clamp(2.4rem, 8vw, 5rem) !important;
   }
 }
 
 @media (max-width: 480px) {
-  /* Header */
-  .header {
-    flex-direction: column;
-    gap: 0.75rem;
-    padding: 1rem;
-    align-items: center;
+  /* Slider */
+  .before-after-container {
+    height: 320px !important;
   }
-  
-  /* Hero */
-  .hero-mockup {
-    max-height: 280px;
+  .slider-overlay-title {
+    letter-spacing: 0.08em;
+    font-size: 1.1rem;
   }
+  .slider-overlay-subtext {
+    font-size: 0.65rem;
+    max-width: 220px;
+  }
+
+  /* CTA Button group */
   .hero-cta-group {
     flex-direction: column;
     align-items: stretch;
@@ -923,21 +1192,11 @@
     justify-content: center;
   }
 
-  /* Slider */
-  .before-after-container {
-    height: 320px;
-  }
-  .slider-typography-overlay {
-    top: 10%;
-  }
-  .slider-overlay-title {
-    letter-spacing: 0.1em;
-    font-size: 1.25rem;
-  }
-  .slider-overlay-subtext {
-    font-size: 0.7rem;
-    max-width: 240px;
-    padding: 0 0.5rem;
+  /* Ticker further reduction */
+  .ticker-item {
+    font-size: 1.1rem;
+    margin-right: 1.5rem;
+    gap: 0.75rem;
   }
 
   /* Philosophy & Contact Card Padding Reduction */
@@ -946,6 +1205,11 @@
   }
   .contact-form {
     padding: 1.75rem;
+  }
+
+  /* Compare card padding */
+  .compare-card {
+    padding: 2rem;
   }
 }
 
