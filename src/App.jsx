@@ -359,7 +359,7 @@ function App() {
       <section className="section">
         <div className="container">
           <span className="mono-label">02 / WHY WE ARE DIFFERENT</span>
-          <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '3rem', margin: '3rem 0' }}>
+          <div className="manifesto-grid">
             <div>
               <h2 className="display-medium" style={{ marginBottom: '1.5rem', textAlign: 'left' }}>
                 WHY MOST LOCAL BUSINESSES LOOK TEMPLATE-MADE

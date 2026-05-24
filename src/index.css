@@ -84,7 +84,7 @@ html, body {
   html, body {
     cursor: auto;
   }
-  .custom-cursor {
+  .custom-cursor, .custom-cursor-dot {
     display: none !important;
   }
 }

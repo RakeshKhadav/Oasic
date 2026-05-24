@@ -794,3 +794,144 @@
   }
 }
 
+/* Manifesto Grid Styles */
+.manifesto-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 3rem;
+  margin: 3rem 0;
+}
+
+/* Responsiveness Media Queries */
+@media (max-width: 1024px) {
+  .hero-mockup {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16/10;
+    max-height: 420px;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Header */
+  .header {
+    padding: 0.75rem 1.5rem;
+    top: 1rem;
+  }
+  .logo {
+    font-size: 1.5rem;
+  }
+  .nav-links {
+    gap: 1.5rem;
+  }
+  .nav-link {
+    font-size: 0.75rem;
+  }
+
+  /* Manifesto */
+  .manifesto-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin: 2rem 0;
+  }
+
+  /* Hero */
+  .hero-wrapper {
+    padding-top: 100px;
+  }
+  .hero-mockup {
+    height: auto;
+    aspect-ratio: 16/10;
+    max-height: 360px;
+  }
+
+  /* Slider */
+  .before-after-container {
+    height: 420px;
+  }
+  .slider-typography-overlay {
+    top: 12%;
+  }
+  .slider-overlay-title {
+    letter-spacing: 0.15em;
+    font-size: clamp(1.4rem, 4vw, 2.2rem);
+  }
+  .slider-overlay-subtext {
+    font-size: 0.75rem;
+    max-width: 320px;
+    padding: 0 1rem;
+  }
+  .ba-label-pill {
+    font-size: 0.6rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  /* Services */
+  .service-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 2rem 0;
+  }
+  .service-tags {
+    margin-top: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  /* Footer */
+  .footer-bottom {
+    flex-direction: column;
+    gap: 1.5rem;
+    text-align: center;
+    padding: 2.5rem 0;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Header */
+  .header {
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem;
+    align-items: center;
+  }
+  
+  /* Hero */
+  .hero-mockup {
+    max-height: 280px;
+  }
+  .hero-cta-group {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+  .hero-cta-group .btn-brutalist {
+    justify-content: center;
+  }
+
+  /* Slider */
+  .before-after-container {
+    height: 320px;
+  }
+  .slider-typography-overlay {
+    top: 10%;
+  }
+  .slider-overlay-title {
+    letter-spacing: 0.1em;
+    font-size: 1.25rem;
+  }
+  .slider-overlay-subtext {
+    font-size: 0.7rem;
+    max-width: 240px;
+    padding: 0 0.5rem;
+  }
+
+  /* Philosophy & Contact Card Padding Reduction */
+  .philosophy-quote-card {
+    padding: 1.75rem;
+  }
+  .contact-form {
+    padding: 1.75rem;
+  }
+}
+
